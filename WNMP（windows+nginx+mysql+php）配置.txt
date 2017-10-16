@@ -1,0 +1,134 @@
+﻿Windows下WNMP（windows+nginx+mysql+php）配置
+
+1.下载
+NGINX-1.8.0官网下载：http://nginx.org/en/download.html
+PHP5.6.15版本下载地址：http://windows.php.net/download/
+Mysql5.5.19版本下载地址：http://www.mysql.com/downloads/mysql/
+
+2.安装Mysql
+配置时用户名root,密码root,字符编码utf8,utf8_general_ci
+
+3.解压NGINX和PHP到你自己安装位置
+这里我在D盘新建一个文件夹：WNMP(windows,ngnix,MySQL,PHP)，把下面的软件安装到这个文件夹里面。
+
+NGINX目录D:\WNMP\nginx
+PHP目录D:\WNMP\php
+
+
+4.安装nginx
+(1).打开D:\WNMP\nginx目录，运行该文件夹下的nginx.exe
+
+(2).测试是否启动nginx。打开浏览器访问http://localhost 或http://127.0.0.1，看看是否出现“Welcome to nginx!”，出现的证明已经启动成功了。没有启动的话，看看80端口有没有被占用。
+注意：该网站的默认目录在“D:\WNMP\nginx\html”下
+
+5.安装php（这里主要讲nginx配置启动php，以cgi运行php）
+(1).修改nginx配置文件是D:\WNMP\nginx\conf\nginx.conf
+修改大概第43~45行之间的
+
+location / {  
+    root   html;  
+    index  index.html index.htm;  
+}  
+
+更改root目录，添加index.php
+
+
+location / {  
+    root   D:/WNMP/nginx/html;  
+    index  index.html index.htm index.php;  
+}  
+
+
+修改大概在第63-71行的
+
+
+# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000  
+#  
+#location ~ \.php$ {  
+#    root           html;  
+#    fastcgi_pass   127.0.0.1:9000;  
+#    fastcgi_index  index.php;  
+#    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;  
+#    include        fastcgi_params;  
+#}  
+
+更改root目录，更改/scripts为$document_root
+
+
+# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000  
+#  
+location ~ \.php$ {  
+    root           D:/WNMP/nginx/html;  
+    fastcgi_pass   127.0.0.1:9000;  
+    fastcgi_index  index.php;  
+    fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;  
+    include        fastcgi_params;  
+}  
+
+
+(2)更改php目录下的php.ini-development，将文件名改为php.ini,进行如下配置
+搜索“extension_dir”，找到： e;xtension_dir = "ext" 先去前面的分号再改为 extension_dir = "D:\WNMP\php\ext"
+搜索“date.timezone”，找到：;date.timezone = 先去前面的分号再改为 date.timezone = Asia/Shanghai
+搜索“enable_dl”，找到：enable_dl = Off 改为 enable_dl = On
+搜索“cgi.force_redirect” ;cgi.force_redirect = 1 先去前面的分号再改为 cgi.force_redirect = 0
+搜索“fastcgi.impersonate”，找到： ;fastcgi.impersonate = 1 去掉前面的分号
+搜索“cgi.rfc2616_headers”，找到：;cgi.rfc2616_headers = 0 先去前面的分号再改为 cgi.rfc2616_headers = 1
+搜索“php_mysql”，找到：”extension=php_mysql.dll和extension=php_mysqli.dll  去掉前面的“;”extension=php_mysql.dll和extension=php_mysqli.dll   （支持MYSQL数据库）
+
+其他的配置请按照自己的需求更改。
+
+
+6.运行
+(1).编辑info.php内容如下,放到D:\WNMP\nginx\html目录
+
+<?php  
+phpinfo();  
+?>  
+
+
+(2).切换到php目录，执行如下命令运行php，如果出现找不到msvcr110.dll的情况，请自行下载安装VC++2012运行库
+
+
+D:  
+cd D:\WNMP\php  
+php-cgi.exe -b 127.0.0.1:9000 -c D:\WNMP\php\php.ini  
+
+
+(3).切换到nginx目录，重启nginx.exe，
+
+D:  
+cd D:\WNMP\nginx  
+nginx -s reload  
+
+
+(4).浏览器访问http://127.0.0.1/info.php
+如果出现PHP版本信息说明配置成功
+
+7.测试mysql
+(1).编辑sqltest.php内容如下,放到D:\WNMP\nginx\html目录
+
+<?php  
+$link=mysql_connect("localhost","root","root");  
+if(!$link) echo "FAILD!";  
+else echo "OK!";  
+?>  
+
+(2)如果提示mysql_connect将被废弃建议使用mysqli or PDO，请使用下面的代码连接
+使用mysqli连接的代码
+
+<?php  
+$link = new mysqli('localhost', 'root', 'root');  
+if(!$link) echo "FAILD!";  
+else echo "OK!";  
+?>  
+
+
+(3)浏览器访问http://127.0.0.1/sqltest.php
+如果页面显示OK，说明mysql配置成功
+
+
+8.附：nginx常用命令
+nginx -s stop 强制关闭
+nginx -s quit 安全关闭
+nginx -s reload 改变配置文件的时候，重启nginx工作进程，来时配置文件生效
+nginx -s reopen 打开日志文件
