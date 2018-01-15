@@ -78,30 +78,31 @@ FFmpeg
 这里你可以用这个视频地址自己尝试一下：https://www.youtube.com/watch?v=1La4QzGeaaQ。
 
 最普通的下载命令
-
-`youtube-dl 视频地址`
-
+```
+youtube-dl 视频地址
+```
 这样直接下载的是指定视频地址的最高质量视频，并且已经是音视频合成好的视频。
 
 配置代理参数
 
-`youtube-dl --proxy 127.0.0.1:8087 视频地址`
-
+```
+youtube-dl --proxy 127.0.0.1:8087 视频地址
+```
 没有在配置文件设置代理的情况下，在配置文件配置了就不用加上这个参数--proxy参数。
 
 查看所能下载的所有格式
-
-`youtube-dl -F或--list-formats 视频地址`
-
+```
+youtube-dl -F或--list-formats 视频地址
+```
 其中-F的F必须是大写，不能是小写的f，如果你写成小写，那就会报错。
 输入该命令后，那在控制台上就会显示该视频地址所能下载到的所有格式。
 
 比如输入以下命令：
-
-`youtube-dl -F https://www.youtube.com/watch?v=1La4QzGeaaQ`
+```
+youtube-dl -F https://www.youtube.com/watch?v=1La4QzGeaaQ
 或
-`youtube-dl --list-formats https://www.youtube.com/watch?v=1La4QzGeaaQ`
-
+youtube-dl --list-formats https://www.youtube.com/watch?v=1La4QzGeaaQ
+```
 得到的结果就是：
 ```
 format code  extension  resolution note
@@ -149,12 +150,13 @@ format code  extension  resolution note
 18           mp4        640x360    medium , avc1.42001E, mp4a.40.2@ 96k
 22           mp4        1280x720   hd720 , avc1.64001F, mp4a.40.2@192k (best)
 ```
+
 下载指定格式的文件
 
 关于这一块，重点关注的是命令中的参数，这里参数变化就会多一点点。
-
-`youtube-dl -f 或 --format 格式代号 视频地址`
-
+```
+youtube-dl -f 或 --format 格式代号 视频地址
+```
 与之前的相反，这里的-f只能是小写，不能是大写。
 前面我们查看了指定视频地址的所有能够下载到的格式，其中format code这一列就是格式代号，比如就拿之前所看到的数据来说：
 
@@ -176,35 +178,37 @@ youtube-dl --format 266 https://www.youtube.com/watch?v=1La4QzGeaaQ
 
 但使用FFmpeg进行合成又要使用命令了，这显得很繁琐，但还好有一种更简单的方式：
 只要你安装配置好了FFmpeg，在youtube-dl命令里同时指定视频与音频两者的格式代号进行下载，那youtube-dl就会自动调用FFmpeg进行合成。
-
-`youtube-dl -f 视频格式代号+音频格式代号 视频地址`
-
+```
+youtube-dl -f 视频格式代号+音频格式代号 视频地址
+```
 这里两个格式代号，前面必须是视频，后面必须是音频，不能搞反了。
 现在还是拿之前那个Youtube视频链接作为案例。
 
 现在想下载它对应的质量最佳的视频以及质量最佳的音频以合成一个完整的视频
-
-`youtube-dl -f bestvideo+bestaudio https://www.youtube.com/watch?v=1La4QzGeaaQ`
-
+```
+youtube-dl -f bestvideo+bestaudio https://www.youtube.com/watch?v=1La4QzGeaaQ
+```
 其实这条命令就相当于最开始那条普通的下载命令
-
-`youtube-dl https://www.youtube.com/watch?v=1La4QzGeaaQ`
-
+```
+youtube-dl https://www.youtube.com/watch?v=1La4QzGeaaQ
+```
 下载4K30帧的mp4视频
 
 那就得首先查询音频视频的格式代号，再进行下载。4K30帧mp4视频的格式代号是266，对应的m4a音频代号是140
-
-`youtube-dl -f 266+140 https://www.youtube.com/watch?v=1La4QzGeaaQ`
-
+```
+youtube-dl -f 266+140 https://www.youtube.com/watch?v=1La4QzGeaaQ
+```
 有时候，我们不一定要想最佳质量的，反而是想根据自己的需要来下载的，想下载其他分辨率或其他格式的如法炮制就行
 
 指定下载的路径
+
 如果你已经试过前面的命令了，那就会发现：所下载的视频对应的文件都被放在执行该下载命令的路径下，要修改下载路径很简单：使用参数-o。
-
-`youtube-dl -o "绝对路径\%(title)s.%(ext)s"`
-
+```
+youtube-dl -o "绝对路径\%(title)s.%(ext)s"
+```
 其中，前半部分的绝对路径是你指定的，后半部分最好是固定的，使用原来的标题作为文件名以及使用原扩展名。
 
 比如把之前的4K30帧的mp4视频下载到H:\youtube_videos内，那么命令就是这样：
-
-`youtube-dl -o "H:\youtube_videos\%(title)s.%(ext)s" -f 266+140 https://www.youtube.com/watch?v=1La4QzGeaaQ`
+```
+youtube-dl -o "H:\youtube_videos\%(title)s.%(ext)s" -f 266+140 https://www.youtube.com/watch?v=1La4QzGeaaQ
+```
