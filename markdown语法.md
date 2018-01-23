@@ -2,7 +2,7 @@
 
 > Markdown 是一种可以使用普通文本编辑器编写的标记语言, 通过简单的标记语法, 它可以使普通文本内容具有一定的格式。
 
-via https://github.com/cdoco/markdown-syntax 略有编辑。
+**via** https://github.com/cdoco/markdown-syntax 略有编辑。
 
 ## 目录
 
@@ -321,10 +321,10 @@ Markdown 使用星号`*`和底线`_`作为标记强调字词的符号。
 `![图片Alt](图片地址 "图片Title")`
 
 ```markdown
-![哆啦A梦](https://cdoco.com/images/duolaameng.jpeg "哆啦A梦")
+![Lenna](https://upload.wikimedia.org/wikipedia/zh/3/34/Lenna.jpg "Lenna")
 ```
 
-![哆啦A梦](https://cdoco.com/images/duolaameng.jpeg "哆啦A梦")
+![Lenna](https://upload.wikimedia.org/wikipedia/zh/3/34/Lenna.jpg "Lenna")
 
 ### 图片参考式
 
@@ -333,14 +333,14 @@ Markdown 使用星号`*`和底线`_`作为标记强调字词的符号。
 在文档的最后写上 `[标记]:图片地址 "Title"`。
 
 ```markdown
-![哆啦A梦][duolaameng]
+![Lenna][Lenna]
 
-[duolaameng]:https://cdoco.com/images/duolaameng.jpeg "哆啦A梦"
+[Lenna]:https://upload.wikimedia.org/wikipedia/zh/3/34/Lenna.jpg "Lenna"
 ```
 
-![哆啦A梦][duolaameng]
+![Lenna][Lenna]
 
-[duolaameng]:https://cdoco.com/images/duolaameng.jpeg "哆啦A梦"
+[Lenna]:https://upload.wikimedia.org/wikipedia/zh/3/34/Lenna.jpg "Lenna"
 
 ## 表格
 
